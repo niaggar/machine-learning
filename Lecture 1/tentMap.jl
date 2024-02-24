@@ -16,11 +16,14 @@ x[1] = 0.01
 mu = 1.99
 i = 1
 
+list = Array{Float64}(undef, N_total)
+
 while i < N_total
     global i, mu, x
 
     x_0 = x[i]
     x_1 = tentMap(x_0, mu)
+    ist[i] = x_1
 
     x[i + 1] = x_1
     i += 1
@@ -48,3 +51,8 @@ end
 
 scatter(list1, list2)
 #scatter3d(list1, list2, list3)
+histogram(list, bins=:50, xlabel="Valor", ylabel="Frecuencia", seriestype=:bars, title="Histograma de Frecuencias")
+
+println(skewness(list))
+println(var(list))
+println(mean(list))
