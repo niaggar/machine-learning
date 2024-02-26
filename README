@@ -1,0 +1,35 @@
+
+Para crear un nuevo proyecto en Julia, debemos usar el comando.
+
+```julia
+using Pkg
+Pkg.generate("MiProyecto")
+```
+
+Para activar el proyecto en el que estamos trabajando, debemos usar el comando.
+
+```julia
+using Pkg
+Pkg.activate("MiProyecto")
+```
+
+Para agregar un paquete a nuestro proyecto, debemos usar el comando.
+
+```julia
+using Pkg
+Pkg.add("Plots")
+```
+
+Para eliminar un paquete de nuestro proyecto, debemos usar el comando.
+
+```julia
+using Pkg
+Pkg.rm("Plots")
+```
+
+Para actualizar los paquetes de nuestro proyecto, debemos usar el comando.
+
+```julia
+using Pkg
+Pkg.update()
+```
