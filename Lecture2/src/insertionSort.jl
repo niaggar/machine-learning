@@ -8,14 +8,11 @@ function insertionSortWhile(list::Array, order)
     for i in 2:numberOfElements
         current = orderList[i]
         j = i - 1
-        while j >= 1 && current < orderList[j]
-            next = orderList[j + 1]
-            actual = orderList[j]
-            orderList[j + 1] = actual
-            orderList[j] = next
-
+        while j > 0 && orderList[j] > current
+            orderList[j+1] = orderList[j]
             j -= 1
         end
+        orderList[j+1] = current
     end
 
     return orderList
