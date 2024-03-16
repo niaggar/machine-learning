@@ -1,13 +1,10 @@
-# using Pkg
-# Pkg.add("FileIO")
-# Pkg.add("Images")
-# Pkg.instantiate()
-
 using FileIO
 using Images
 
-img = FileIO.load("numTest.jpg")
+img = FileIO.load("Lecture4/numTest.jpg")
 chanels = channelview(img)
+
+println(size(img))
 
 newSize = (48, 48)
 currentSize = size(img)
@@ -36,5 +33,5 @@ for row in 1:newSize[1]
 end
 
 imgThumb = colorview(RGB, thumbnail)
-save("thumb.jpg", imgThumb)
+save("Lecture4/thumb.jpg", imgThumb)
 

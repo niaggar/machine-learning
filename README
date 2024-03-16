@@ -1,35 +1,8 @@
 
-Para crear un nuevo proyecto en Julia, debemos usar el comando.
+Primero iniciar la terminal de Julia mediante el comando `julia` en la terminal de Linux.
 
-```julia
-using Pkg
-Pkg.generate("MiProyecto")
-```
+Si lo que se desea es instalar los paquetes necesarios para correr el código, iniciar la terminal pkg de Julia mediante el comando `]` y luego correr el comando `instantiate` para instalar los paquetes necesarios.
 
-Para activar el proyecto en el que estamos trabajando, debemos usar el comando.
+Si se dese agregar un nuevo paquete, se puede hacer mediante el comando `add nombre_del_paquete` en la terminal pkg de Julia.
 
-```julia
-using Pkg
-Pkg.activate("MiProyecto")
-```
-
-Para agregar un paquete a nuestro proyecto, debemos usar el comando.
-
-```julia
-using Pkg
-Pkg.add("Plots")
-```
-
-Para eliminar un paquete de nuestro proyecto, debemos usar el comando.
-
-```julia
-using Pkg
-Pkg.rm("Plots")
-```
-
-Para actualizar los paquetes de nuestro proyecto, debemos usar el comando.
-
-```julia
-using Pkg
-Pkg.update()
-```
+Para correr el código, se puede hacer mediante el comando `julia --project=. nombre_del_archivo.jl` en la terminal de Linux desde la carpeta raíz del proyecto.
