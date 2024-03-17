@@ -1,14 +1,3 @@
-import Pkg
-if !haskey(Pkg.installed(), "Plots")
-    Pkg.add("Plots")
-end
-if !haskey(Pkg.installed(), "Statistics")
-    Pkg.add("Statistics")
-end
-if !haskey(Pkg.installed(), "StatsBase")
-    Pkg.add("StatsBase")
-end
-
 module Utils
 using Plots
 using Statistics

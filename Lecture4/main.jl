@@ -1,37 +1,54 @@
+include("src/sizeReduction.jl")
+include("src/vectorizeImage.jl")
+include("src/pixelByPixelCorrection.jl")
+include("src/convolution.jl")
+
+using .SizeReduction
+using .VectorizeImage
+using .PixelByPixelCorrection
+using .Convolution
 using FileIO
-using Images
 
-img = FileIO.load("Lecture4/numTest.jpg")
-chanels = channelview(img)
+newSize = 0.5
+resultRoute = "Lecture4/results/"
 
-println(size(img))
 
-newSize = (48, 48)
-currentSize = size(img)
+img = FileIO.load("Lecture4/numOne.jpeg")
+squareImg = square(img)
+imgThumb = reduce_image_size(squareImg, newSize)
 
-numBlockVer = round(Int, currentSize[1] / newSize[1])
-numBlockHor = round(Int, currentSize[2] / newSize[2])
-N = numBlockHor * numBlockVer
+println("Original Image Size: ", size(img))
+println("Square Image Size: ", size(squareImg))
+println("Reduced Image Size: ", size(imgThumb))
 
-thumbnail = zeros((3, newSize[1], newSize[2]))
-for row in 1:newSize[1] 
-    for col in 1:newSize[2]
-        for chanel in 1:3
-            acumulator = 0
 
-            for subRow in 1:numBlockHor
-                for subCol in 1:numBlockVer
-                    rowBigMatrix = subRow + (row - 1) * numBlockHor
-                    colBigMatrix = subCol + (col - 1) * numBlockVer
-                    acumulator += chanels[chanel, rowBigMatrix, colBigMatrix]
-                end
-            end
+imgGamma = pixel_by_pixel(imgThumb, transform_gamma, Dict("gamma" => 0.5))
+imgNegative = pixel_by_pixel(imgThumb, transform_negative, Dict())
+imgHistogram = pixel_by_pixel(imgThumb, transform_histogram, Dict())
+imgHistogramEqualization = transform_equalization(imgThumb)
 
-            thumbnail[chanel, row, col] = acumulator / N
-        end
-    end
-end
+plot_histogram(imgThumb, "Original Image", resultRoute * "originalHistogram.png")
+plot_histogram(imgGamma, "Gamma Correction", resultRoute * "gammaHistogram.png")
+plot_histogram(imgNegative, "Negative Correction", resultRoute * "negativeHistogram.png")
+plot_histogram(imgHistogram, "Histogram Equalization", resultRoute * "histogramHistogram.png")
+plot_histogram(imgHistogramEqualization, "Histogram Equalization", resultRoute * "histogramEqualizationHistogram.png")
+save(resultRoute * "originalImage.jpg", imgThumb)
+save(resultRoute * "gammaCorrection.jpg", imgGamma)
+save(resultRoute * "negativeCorrection.jpg", imgNegative)
+save(resultRoute * "histogramCorrection.jpg", imgHistogram)
+save(resultRoute * "histogramEqualizationCorrection.jpg", imgHistogramEqualization)
 
-imgThumb = colorview(RGB, thumbnail)
-save("Lecture4/thumb.jpg", imgThumb)
+imgEdgeDetection = convolution(imgThumb, edgedetection)
+imgBoxBlur = convolution(imgThumb, boxBlur)
+imgGaussian3x3 = convolution(imgThumb, gaussian3x3)
+imgGaussian5x5 = convolution(imgThumb, gaussian5x5)
+imgSharpen = convolution(imgThumb, sharpen)
+imgUnSharpMask = convolution(imgThumb, unSharpMask)
+
+save("Lecture4/edgeDetection.jpg", imgEdgeDetection)
+save("Lecture4/boxBlur.jpg", imgBoxBlur)
+save("Lecture4/gaussian3x3.jpg", imgGaussian3x3)
+save("Lecture4/gaussian5x5.jpg", imgGaussian5x5)
+save("Lecture4/sharpen.jpg", imgSharpen)
+save("Lecture4/unSharpMask.jpg", imgUnSharpMask)
 
