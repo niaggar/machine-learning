@@ -18,5 +18,12 @@ function vectorize_image(img)
     return finalVect
 end
 
+function vectorize_matrix(matrix)
+    pixelValues = float.(matrix)
+    vect = vec(pixelValues)
+
+    return vect    
+end
+
 export vectorize_image
 end

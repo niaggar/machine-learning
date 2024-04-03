@@ -83,6 +83,51 @@ function transform_equalization(img)
     return colorview(RGB, correction_img)
 end
 
+function transform_tresholding(i, props::Dict)
+    treshold = props["treshold"]
+    
+    if i > treshold
+        j = 1
+    else
+        j = 0
+    end
+    
+    return j
+end
+
+function transform_black_and_white(img)
+    height, width = size(img)
+    chanels = channelview(img)
+
+    # Combine the three channels into one channel
+    gray = zeros((height, width))
+    for row in 1:height
+        for col in 1:width
+            gray[row, col] = (chanels[1, row, col] + chanels[2, row, col] + chanels[3, row, col]) / 3
+        end
+    end
+
+    # return the image in black and white
+    return gray
+end
+
+function transform_tresholding_matrix(matrix, treshold)
+    height, width = size(matrix)
+    for row in 1:height
+        for col in 1:width
+            if matrix[row, col] > treshold
+                matrix[row, col] = 1
+            else
+                matrix[row, col] = 0
+            end
+        end
+    end
+
+    return matrix
+end
+
+
+
 function plot_histogram(image, title, filename)
     height, width = size(image)
     chanels = channelview(image)
@@ -104,5 +149,5 @@ function plot_histogram(image, title, filename)
     savefig(filename)
 end
 
-export pixel_by_pixel, transform_negative, transform_gamma, transform_histogram, transform_equalization, plot_histogram
+export pixel_by_pixel, transform_negative, transform_gamma, transform_histogram, transform_equalization, plot_histogram, transform_tresholding, transform_black_and_white
 end
