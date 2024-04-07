@@ -16,14 +16,15 @@ for i in 1:numberOfImages
         currentnum = "0"*currentnum
     end
 
-    imageOne = loadImageGray(folderImages * "1-" * currentnum * ".jpg", "1-" * currentnum)
-    imageZero = loadImageGray(folderImages * "0-" * currentnum * ".jpg", "0-" * currentnum)
+    imageOne = loadImageGray(folderImages * "1-" * currentnum * ".jpg", "1-" * currentnum, "1")
+    imageZero = loadImageGray(folderImages * "0-" * currentnum * ".jpg", "0-" * currentnum, "0")
 
     push!(images, imageOne)
     push!(images, imageZero)
 end
 
 println("Number of images: ", length(images))
+println("Size of the vector: ", length(images[1].vector))
 
 X = hcat([image.vector for image in images]...)
 desc = svd(X)
@@ -45,14 +46,38 @@ Vt = desc.Vt[1:3, :]
 # Graph the 3 first vectors of Vt in 3D
 using PlotlyJS
 using DataFrames
+using CSV
 
 x = Vt[1, :]
 y = Vt[2, :]
 z = Vt[3, :]
 
-df = DataFrame(x=x, y=y, z=z, species=[image.label for image in images])
+df = DataFrame(x=x, y=y, z=z, species=[image.specie for image in images])
 plot(
     df,
-    x=:sepal_length, y=:sepal_width, z=:petal_width, color=:species,
+    x=:x, y=:y, z=:z, color=:species,
     type="scatter3d", mode="markers"
 )
+
+# Graph x vs y
+plot(
+    df,
+    x=:x, y=:y, color=:species,
+    type="scatter", mode="markers"
+)
+
+# Graph x vs z
+plot(
+    df,
+    x=:x, y=:z, color=:species,
+    type="scatter", mode="markers"
+)
+
+# Graph y vs z
+plot(
+    df,
+    x=:y, y=:z, color=:species,
+    type="scatter", mode="markers"
+)
+
+

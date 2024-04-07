@@ -4,19 +4,20 @@ using MathUtils
 using ImgStr
 using Images, FileIO
 
-function loadImage(route::String, label::String)
+function loadImage(route::String, label::String, specie::String)
     img = FileIO.load(route)
     imgRGB = channelview(img)
     imgFloat = Float64.(imgRGB)
     
-    return ImageStruct(imgFloat, label)    
+    return ImageStruct(imgFloat, label, specie)
 end
 
-function loadImageGray(route::String, label::String)
+function loadImageGray(route::String, label::String, specie::String)
     img = FileIO.load(route)
     imgGray = Float64.(img)
+    vector = vectorizeMatrix(imgGray)
     
-    return ImageGray(imgGray, vectorizeMatrix(imgGray), label) 
+    return ImageGray(imgGray, vector, label, specie)
 end
 
 function createImageGray(image::ImageStruct)
@@ -25,7 +26,7 @@ function createImageGray(image::ImageStruct)
     imgGray = convert(Matrix{Float64}, imgGray)
     vector = vectorizeMatrix(imgGray)
     
-    return ImageGray(imgGray, vector, image.label)
+    return ImageGray(imgGray, vector, image.label, image.specie)
 end
 
 function saveImageGray(image::ImageGray, route::String)
