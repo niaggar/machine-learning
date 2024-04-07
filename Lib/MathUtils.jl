@@ -12,16 +12,12 @@ function reduceMatrix(matrix::Matrix{Float64}, newSize::Tuple{Int, Int})
 
     for i in 1:newRows
         for j in 1:newCols
-            # calculate the limits of the block
             rowStart = (i - 1) * blockRows + 1
             rowEnd = i * blockRows
             colStart = (j - 1) * blockCols + 1
             colEnd = j * blockCols
 
-            # get the block
             block = matrix[rowStart:rowEnd, colStart:colEnd]
-
-            # calculate the mean of the block
             newMatrix[i, j] = mean(block)
         end
     end
