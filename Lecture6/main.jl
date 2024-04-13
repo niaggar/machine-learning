@@ -55,12 +55,18 @@ Vt = desc.Vt[1:3, :]
 xdata = Vt[1, :]
 ydata = Vt[2, :]
 zdata = Vt[3, :]
-df = DataFrame(xdata = xdata, ydata = ydata, zdata = zdata, species = [image.specie for image in images])
+df = DataFrame(
+    xdata = xdata,
+    ydata = ydata,
+    zdata = zdata,
+    species = [image.specie for image in images],
+    label = [image.label for image in images]
+)
 
 plot(
 	df,
 	x = :xdata, y = :ydata, z = :zdata, color = :species,
-	type = "scatter3d", mode = "markers",
+	type = "scatter3d", mode = "markers", text = :label,
     labels=Dict(
         :xdata => "PCA 1",
         :ydata => "PCA 2",
@@ -73,7 +79,7 @@ plot(
 plot(
 	df,
 	x = :xdata, y = :ydata, color = :species,
-	type = "scatter", mode = "markers",
+	type = "scatter", mode = "markers", text = :label,
     labels=Dict(
         :xdata => "PCA 1",
         :ydata => "PCA 2",
@@ -86,7 +92,7 @@ plot(
 plot(
 	df,
 	x = :xdata, y = :zdata, color = :species,
-	type = "scatter", mode = "markers",
+	type = "scatter", mode = "markers", text = :label,
     labels=Dict(
         :xdata => "PCA 1",
         :ydata => "PCA 2",
@@ -99,7 +105,7 @@ plot(
 plot(
     df,
     x = :ydata, y = :zdata, color = :species,
-    type = "scatter", mode = "markers",
+    type = "scatter", mode = "markers", text = :label,
     labels=Dict(
         :xdata => "PCA 1",
         :ydata => "PCA 2",
