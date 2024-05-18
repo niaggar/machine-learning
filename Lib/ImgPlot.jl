@@ -64,7 +64,7 @@ function pltFourier(fourier::ImageFourier, saveRoute::String)
     l = @layout [a b{0.1w} c]
     fig = plot(p1, b, p2, layout=l, size=(1000, 500), legend=false)
 
-    savefig(fig, saveRoute)    
+    savefig(fig, saveRoute)
 end
 
 function pltFourierN(fourier::ImageFourier)
