@@ -34,6 +34,29 @@ img = images[1]
 X = hcat([image.vector for image in images]...)
 desc = svd(X)
 
+U = desc.U
+S = desc.S
+Vt = desc.Vt
+
+# Guarda cada columna de Vt como una columna de un archivo csv
+pca1 = Vt[1, :]
+pca2 = Vt[2, :]
+pca3 = Vt[3, :]
+labels = [image.specie for image in images]
+
+df = DataFrame(
+    labels = labels,
+    pca1 = pca1,
+    pca2 = pca2,
+    pca3 = pca3,
+)
+
+CSV.write(folderImages*"pca.csv", df)
+
+# Read the file
+
+
+
 
 Vt = desc.Vt[1:3, :]
 pca1 = Vt[1, :]
