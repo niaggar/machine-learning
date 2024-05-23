@@ -7,7 +7,3 @@ push!(LOAD_PATH, "./Lecture8/src/")
 
 # Perceptron division
 include("src/Perceptron.jl")
-
-
-
-

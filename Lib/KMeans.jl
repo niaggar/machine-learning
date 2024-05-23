@@ -1,5 +1,7 @@
 module KMeans
 
+using StatsBase
+
 mutable struct Point2D
     x::Float64
     y::Float64
@@ -13,7 +15,7 @@ function createRandomCentroid(num, limitsX, limitsY)
     for i in 1:num
         x = rand() * (limitsX[2] - limitsX[1]) + limitsX[1]
         y = rand() * (limitsY[2] - limitsY[1]) + limitsY[1]
-        push!(centroids, Point2D(x, y, "C" * string(i), "CG" * string(i), ""))
+        push!(centroids, Point2D(x, y, "C" * string(i), "C" * string(i), ""))
     end
     return centroids
 end
@@ -56,16 +58,40 @@ function updateCentroids(points, centroids)
     end
 end
 
-function kmeans(points, k, maxIter)
+function setOriginalLabelForCentroid(centroids, points)
+    for centroid in centroids
+        centroidName = centroid.centroid
+        itemCentroidName = "Item-" * centroidName
+        itemCentroid = filter(point -> point.centroid == itemCentroidName, points)
+
+        if length(itemCentroid) > 0
+            species = [point.original for point in itemCentroid]
+            centroid.original = mode(species)
+        end
+    end
+end
+
+function kmeans(points, k, tolerance, maxIter=1000000)
     limitsX = extrema([point.x for point in points])
     limitsY = extrema([point.y for point in points])
-    centroids = createRandomCentroid(k, limitsX, limitsY)
 
+    centroids = createRandomCentroid(k, limitsX, limitsY)
+    passCentroids = deepcopy(centroids)
+
+    currentDiff = [Inf for i in 1:k]
     for i in 1:maxIter
         assignPointsToCentroids(points, centroids)
         updateCentroids(points, centroids)
+
+        diff = [euclideanDistance(centroids[i], passCentroids[i]) for i in 1:k]
+        if all(diff .< tolerance)
+            break
+        end
+
+        passCentroids = deepcopy(centroids)
     end
 
+    setOriginalLabelForCentroid(centroids, points)
     return centroids
 end
 

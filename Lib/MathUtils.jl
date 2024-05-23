@@ -30,5 +30,11 @@ function vectorizeMatrix(matrix::Matrix{Float64})
     return final
 end
 
-export reduceMatrix, vectorizeMatrix    
+function vectorizeMatrixInt(matrix::Matrix{Int})
+    final = vec(matrix)
+    return final
+    
+end
+
+export reduceMatrix, vectorizeMatrix, vectorizeMatrixInt
 end

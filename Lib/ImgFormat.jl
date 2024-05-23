@@ -21,7 +21,7 @@ function reduceImageGray(img::ImageGray, newSize::Tuple{Int, Int})
     newGray = reduceMatrix(imgGray, newSize)
     newVector = vectorizeMatrix(newGray)
 
-    return ImageGray(newGray, newVector, img.label)
+    return ImageGray(newGray, newVector, img.label, img.specie)
 end
 
 function transformTreshold(img::ImageGray, treshold::Float64)
@@ -32,7 +32,7 @@ function transformTreshold(img::ImageGray, treshold::Float64)
     end
 
     vector = vectorizeMatrix(imgGray)
-    return ImageGray(imgGray, vector, img.label)
+    return ImageGray(imgGray, vector, img.label, img.specie)
 end
 
 
