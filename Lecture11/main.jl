@@ -2,6 +2,7 @@ push!(LOAD_PATH, "./Lib/")
 push!(LOAD_PATH, "./Lecture11/src/")
 
 using KMeans
+using Clasification
 
 using LinearAlgebra
 using Plots
@@ -24,22 +25,36 @@ pointsCentroids = [
     if row[:isCentroid] == true
 ]
 
+grupsNames = unique([point.centroid for point in pointsItems])
+divLine = Perceptron(pointsItems, grupsNames, 1000)
+maxX = maximum([point.x for point in pointsItems])
+minX = minimum([point.x for point in pointsItems])
 
-
-# Get the points that are labeled as 0
-groupZero = [
-    point 
-    for point in pointsItems 
-    if point.label == "0"
-]
-
-# Get the points that are labeled as 1
+pointsLine = getXYPoints(divLine, minX, maxX)
 groupOne = [
     point 
     for point in pointsItems 
-    if point.label == "1"
+    if point.centroid == "Item-C1"
+]
+groupTwo = [
+    point 
+    for point in pointsItems 
+    if point.centroid == "Item-C2"
 ]
 
 
+ 
 
+plot(
+    title="SVC",
+    xlabel="PCA1",
+    ylabel="PCA2",
+    label="Ones",
+    size=(900, 900),
+    dpi=300
+)
 
+scatter!([point.x for point in groupOne], [point.y for point in groupOne], label="Group One")
+scatter!([point.x for point in groupTwo], [point.y for point in groupTwo], label="Group Two")
+scatter!([point.x for point in pointsCentroids], [point.y for point in pointsCentroids], label="Centroids", markercolor="black", markersize=10)
+plot!(pointsLine[1], pointsLine[2], label="Line", linewidth=2)
